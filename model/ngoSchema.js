@@ -59,7 +59,6 @@ const ngoSchema = new Mongoose.Schema({
             bEmail: {
                   type: String,
                   required: true,
-                  unique: true
             },
             bPassword: {
                   type: String,
