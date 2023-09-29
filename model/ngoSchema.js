@@ -1,6 +1,6 @@
 const Mongoose = require('mongoose');
 const Bcrypt = require('bcrypt');
-// const Jwt = require('jsonwebtoken')
+const Jwt = require('jsonwebtoken')
 
 const ngoSchema = new Mongoose.Schema({
 
@@ -101,25 +101,41 @@ const ngoSchema = new Mongoose.Schema({
                         type: Boolean,
                         default: 0
                   }
-            }]
+            }],
+            bTokens: [{
+                  bToken: {
+                        type: String,
+                  }
+            }],
+      }],
+      nTokens: [{
+            nToken: {
+                  type: String,
+            }
       }],
 });
 
-// UserSchema.methods.GenerateAuthToken = async function () {
+ngoSchema.methods.GenerateAuthToken = async function (which) {
 
-//       try {
+      try {
 
-//             let token = Jwt.sign({_id:this._id}, process.env.SECRET_KEY)
-//             this.tokens = this.tokens.concat({token: token});
-//             await this.save();
-//             return token;
+            let token = Jwt.sign({_id:this._id}, process.env.SECRET_KEY)
+            if(which === "n"){
+                  console.log(token)
+                  this.nTokens = this.nTokens.concat({nToken: token});
+            }
+            else{
+                  this.bTokens = this.bTokens.concat({bToken: token});
+            }
+            await this.save();
+            return token;
 
-//       } catch (err) {
+      } catch (err) {
 
-//             console.log(err);
+            console.log(err);
 
-//       }
-// }
+      }
+}
 
 ngoSchema.pre('save', async function (next) {
 

@@ -1,0 +1,43 @@
+Registration routes: https://safesync.onrender.com/nRegister
+Request type: POST
+Purpose: Registers ngos only and sends email to provided ngo email
+Fields to send in body: {
+	email:value
+	password:value
+	name: value
+	contact : value
+	document: any file
+}
+Responses and their meanings" {
+	406: email, name or password is missing or not reached server
+	422: email already exist
+	201: registered successfully
+	else internal server error
+}
+
+Otp checking Route: https://safesync.onrender.com/nCheckCode
+Request type: POST
+Purpose: to verify entered email is right or wrong using otp verification
+Fields to send in body: {
+	email: je ngo nu registration form bharay gyu ane hve otp verification karvanu hoy aeno email
+	otp: otp entered by user
+}
+Responses and their meanings: {
+	406: Wrong OTP
+	200: Right OTP
+}
+
+Login Route: https://safesync.onrender.com/nLogin
+Request Type: GET
+Purpose: To login into the system after registering
+Fields to send in body: {
+	email: value
+	password: value
+}
+Responses and their meanings:{
+	406: email or password is missing or not reached server
+	417: Incorrect email or password
+	401: Otp verification pending
+	500: Internal server error
+	202: Login Successfull
+}

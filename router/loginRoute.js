@@ -5,7 +5,7 @@ const Bcrypt = require('bcrypt');
 
 const db = require('../model/ngoSchema.js');
 
-const nLog = async(req, res, next) =>{
+R.get('/nLogin', async (req,res) => {
       try {
             const { email, password } = req.body;
 
@@ -15,7 +15,7 @@ const nLog = async(req, res, next) =>{
 
             }
 
-            const Exist = await db.findOne({ nEmail: email },{nPassword: 1, nOtp: 1});
+            const Exist = await db.findOne({ nEmail: email },{nPassword: 1, nOtp: 1, nTokens: 1});
 
             if (!Exist) {
 
@@ -32,7 +32,8 @@ const nLog = async(req, res, next) =>{
             }
             else {
                   if (Exist.nOtp == 0) {
-                        next();
+                        const token = await Exist.GenerateAuthToken("n");
+                        return res.status(202).json({status: 202, token});      //login successfull
                   }
                   else {
                         return res.status(401).json({ status: 401 });       //not acceptable
@@ -44,10 +45,6 @@ const nLog = async(req, res, next) =>{
             console.log(err);
             return res.status(500).json({status: 500})
       }
-}
-
-R.get('/nLogin', nLog, (req,res) => {
-      return res.status(202).json({status: 202});      //login successfull
 })
 
 module.exports = R;
