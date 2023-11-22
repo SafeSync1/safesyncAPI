@@ -1,3 +1,5 @@
+IMPORTANT: (attribute) is optional attribute
+
 
 -->Registration route for NGO: 
 https://safesync.onrender.com/ngoRegister		POST
@@ -125,4 +127,37 @@ Responses and their meanings:{
 	406: empty fields
 	200: Authorized
 	500: internal server error
+}
+
+
+--> Update NGO Information:
+https://safesync.onrender.com/UpdateNgo		PUT
+Purpose: Update NGO information
+Fields to send in body: {
+	email: Ngo email
+	(name): The name you want to replace with current name(String)
+	(contact): the contact number you want to set(integer)
+	(expertise): ex. Disaster management, Employment, child education (String)
+}
+Responses{
+	200: updates successfully
+	500: Internal server error
+}
+
+--> Update Branch Information :
+https://safesync.onrender.com/UpdateBranch		PUT
+Fields to send in body:{
+	bEmail: Branch email
+	nEmail: ngo Email
+	(name): The name you want to replace with current name(String)
+	(address): updated address of the branch(string)
+	(contact): the new contact number(Integer)
+	(coordinates): Updated coordinates(String)
+	(services): Updated services(String Comma seperated)
+	(expertise): Updated expertise(String)
+	(equipements): This should be Array of object, each object contains 2 fields eqName(String) eqQuantity(String)
+}
+Responses:{
+	200: updates successfully
+	500: Internal server error
 }

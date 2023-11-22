@@ -167,7 +167,7 @@ Router.post("/bRegister", upload.single('document'), async (req, res) => {
                   contentType: 'application/pdf'
             };
 
-            const user = new branch({ nEmail: nEmail, bEmail: bEmail, bPassword: password, bName: name, bDocument: final_doc });
+            const user = new branch({ nEmail: nEmail, bEmail: bEmail, bPassword: password, bName: name, bDocument: final_doc, bContact: null });
             await user.save();
 
             res.status(201).send({ status: 201 }); //user created

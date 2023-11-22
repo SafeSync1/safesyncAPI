@@ -40,7 +40,7 @@ const branchSchema = new Mongoose.Schema({
             type: String,
             required: true
       },
-      bPhone: {
+      bContact: {
             type: Number
       },
       bServices: {
@@ -53,21 +53,23 @@ const branchSchema = new Mongoose.Schema({
             type: String
       },
       bLastInteraction: {
-            type: Date      //This will include date and time both
+            type: Date,      //This will include date and time both
+            default: null
       },
       bExpertise: {
             // eName: {
             //       type: String
             // }
-            type: String
+            type: String,
+            default: ""
       },
       bEquipements: [{
             eqName: {
                   type: String
             },
             eqQuantity: {
-                  type: Number,
-                  default: 0
+                  type: String,
+                  default: "-"
             }
       }],
       // bcollab: [{

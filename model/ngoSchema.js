@@ -34,6 +34,11 @@ const ngoSchema = new Mongoose.Schema({
             required: true
       },
 
+      nExpertise: {
+            type: String,
+            default: ""
+      },
+
       nDocument: {
             data: Buffer,
             contentType: String
