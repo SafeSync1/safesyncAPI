@@ -1,5 +1,5 @@
 const Bcrypt = require('bcrypt');
-const Express = require("Express");
+const Express = require("express");
 const Router = Express.Router();
 const db = require('../model/ngoSchema.js');
 const branch = require("../model/branchSchema")
