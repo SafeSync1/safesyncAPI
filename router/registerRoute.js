@@ -39,7 +39,7 @@ const sendMail = async (ngo, to, which) => {
                   }
             } catch (error) {
                   console.log(error)
-                  res.status(500).json({status: 500})
+                  res.status(500).json({ status: 500 })
             }
 
       }
@@ -61,27 +61,50 @@ const sendMail = async (ngo, to, which) => {
                   await db.findOneAndUpdate({ nEmail: to }, { nOtp: Number(CODE) }); //Bcrypt.hash(CODE,12)
             }
             else {
-                  await branch.findOneAndUpdate({ nEmail: ngo, bEmail: to }, {bOtp: Number(CODE)});
+                  await branch.findOneAndUpdate({ nEmail: ngo, bEmail: to }, { bOtp: Number(CODE) });
             }
       } catch (error) {
             console.log(error)
       }
 }
 
-Router.post("/ngoCheckCode", async (req, res) => {
+Router.post("/CheckCode", async (req, res) => {
+      try {
+            const { userType, nEmail, bEmail, otp } = req.body;
+            if (userType === "ngo") {
+                  const Gotp = await db.findOne({ nEmail: nEmail }, { nOtp: 1 })
+                  if (Number(Gotp.nOtp) === 0) {
+                        return res.status(422).json({ status: 422 });    //already Authorized
+                  }
+                  else if (Number(Gotp.nOtp) !== Number(otp)) {
+                        return res.status(406).json({ status: 406 }); //	Not Acceptable
+                  }
+                  else {
+                        await db.findOneAndUpdate({ nEmail: nEmail }, { nOtp: 0 })
+                        return res.status(200).json({ status: 200 }); //	ok
+                  }
+            }
+            else if(userType === "branch") {
+                  const Gotp = await branch.findOne({ bEmail: bEmail, nEmail: nEmail }, {bOtp: 1})
+                  if (Number(Gotp.bOtp) === 0) {
+                        return res.status(422).json({ status: 422 });    //already Authorized
+                  }
+                  else if (Number(Gotp.bOtp) !== Number(otp)) {
+                        return res.status(407).json({ status: 407 }); //	Not Acceptable
+                  }
+                  else {
+                        await branch.findOneAndUpdate({ nEmail: nEmail, bEmail:bEmail }, { bOtp: 0 })
+                        return res.status(200).json({ status: 200 }); //	ok
+                  }
+            }
+            else{
+                  return res.status(406).json({ status: 406 });   //not acceptable
+            }
 
-      const { email, otp } = req.body;
 
-      const Gotp = await db.findOne({ nEmail: email }, { nOtp: 1 })
-      if (Number(Gotp.nOtp) === 0) {
-            return res.status(422).json({ status: 422 });    //already Authorized
-      }
-      else if (Number(Gotp.nOtp) !== Number(otp)) {
-            return res.status(406).json({ status: 406 }); //	Not Acceptable
-      }
-      else {
-            await db.findOneAndUpdate({ nEmail: email }, { nOtp: 0 })
-            return res.status(200).json({ status: 200 }); //	ok
+      } catch (error) {
+            console.log(error)
+            res.status(500).json({ status: 500 })
       }
 
 })
@@ -128,12 +151,12 @@ Router.post("/ngoRegister", upload.single('document'), async (req, res) => {
 });
 
 Router.post("/bRegister", upload.single('document'), async (req, res) => {
-      const { nEmail, email, password, name } = req.body;
-      if (!nEmail || !email || !password || !name) {
+      const { nEmail, bEmail, password, name } = req.body;
+      if (!nEmail || !bEmail || !password || !name) {
             return res.status(406).json({ status: 406 });//not acceptable
       }
       try {
-            const Exist = await branch.findOne({ nEmail: nEmail, bEmail: email });
+            const Exist = await branch.findOne({ nEmail: nEmail, bEmail: bEmail });
             if (Exist) {
                   return res.status(422).json({ status: 422 });//already exist
             }
@@ -144,12 +167,12 @@ Router.post("/bRegister", upload.single('document'), async (req, res) => {
                   contentType: 'application/pdf'
             };
 
-            const user = new branch({ nEmail:nEmail ,bEmail: email, bPassword: password, bName: name, bDocument: final_doc });
+            const user = new branch({ nEmail: nEmail, bEmail: bEmail, bPassword: password, bName: name, bDocument: final_doc });
             await user.save();
 
             res.status(201).send({ status: 201 }); //user created
 
-            sendMail(nEmail, email, "Branch");
+            sendMail(nEmail, bEmail, "Branch");
 
             fs.unlink(req.file.path, (err) => {
                   if (err) {

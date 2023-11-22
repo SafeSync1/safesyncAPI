@@ -1,35 +1,58 @@
-Registration routes: https://safesync.onrender.com/nRegister
-Request type: POST
-Purpose: Registers ngos only and sends email to provided ngo email
+
+-->Registration route for NGO: 
+https://safesync.onrender.com/ngoRegister		POST
+Purpose: Registers ngos only and sends otp verification email to provided ngo email, 
+Registration will get automatically deleted in 60 seconds if otp verification is not done
 Fields to send in body: {
 	email:value
 	password:value
 	name: value
-	contact : value
 	document: any file
 }
-Responses and their meanings" {
+Responses: {
 	406: email, name or password is missing or not reached server
 	422: email already exist
 	201: registered successfully
-	else internal server error
+	500: internal server error
 }
 
-Otp checking Route: https://safesync.onrender.com/nCheckCode
-Request type: POST
+-->Otp checking Route: 
+https://safesync.onrender.com/CheckCode	POST
 Purpose: to verify entered email is right or wrong using otp verification
-Fields to send in body: {
-	email: je ngo nu registration form bharay gyu ane hve otp verification karvanu hoy aeno email
+body: {
+	userType: ngo/branch
+	nEmail: ngo Email 
+	(bEmail): Only Enter if otp verification is for branch email otherwise ignore
 	otp: otp entered by user
 }
-Responses and their meanings: {
+Responses: {
 	406: Wrong OTP
+	422: Already Authorized
 	200: Right OTP
+	500: Internal server error
 }
 
-Login Route: https://safesync.onrender.com/nLogin
-Request Type: GET
-Purpose: To login into the system after registering
+-->Registration route for BRANCH: 
+https://safesync.onrender.com/bRegister	POST
+purpose: Registers branches, deletes the id in 60 seconds if verification is not done
+body:{
+	nEmail: ngo email to which it belongs
+	bEmail: branch email
+	password: value
+	name: value
+	document: any pdf file
+}
+Responses:{
+	406: missing fields
+	422: branch with this email already exist
+	201: registered successfully
+	500: internal server error
+}
+
+
+--> Login Route for NGO: 
+https://safesync.onrender.com/ngoLogin	GET
+Purpose: To login into the system after registering as NGO
 Fields to send in body: {
 	email: value
 	password: value
@@ -38,6 +61,68 @@ Responses and their meanings:{
 	406: email or password is missing or not reached server
 	417: Incorrect email or password
 	401: Otp verification pending
+	402: Authorization Pending
 	500: Internal server error
-	202: Login Successfull
+	202: Login Successfull(returns id and token)
+}
+
+
+--> Login Route for BRANCH: 
+https://safesync.onrender.com/bLogin	GET
+Purpose: To login into the system after registering as BRANCH
+Fields to send in body: {
+	nEmail: ngo email to which it belongs to 
+	bEmail: branch email
+	password: value
+}
+Responses and their meanings:{
+	406: email or password is missing or not reached server
+	417: Incorrect email or password
+	401: Otp verification pending
+	402: Authorization Pending
+	500: Internal server error
+	202: Login Successfull(returns id and token)
+}
+
+
+--> AutoLogin route, same for both: 
+https://safesync.onrender.com/isLoggedIn		GET
+Purpose: if user has token in cookies send that token in this api and verify the token and auto login
+Fields to send in body: {
+	userType: ngo/branch
+	token: value
+}
+Responses and their meanings:{
+	407: missing fields
+	408: invalid token
+	200: Valid token
+	500: Internal server error
+}
+
+
+--> Approval Route for NGO(used by admin): 
+https://safesync.onrender.com/ngoApprove		PUT
+Purpose: Approve a NGO id by checking it's documents 
+Fields to send in body: {
+	email: value
+	secretKey: value
+}
+Responses and their meanings:{
+	401: wrong secretKey
+	406: email is null
+	200: Authorized
+	500: internal server error
+}
+
+--> Approval Route for Branch(used by NGOs): 
+https://safesync.onrender.com/branchApprove		PUT
+Purpose: Approve a Branch id by checking it's documents 
+Fields to send in body: {
+	nEmail: ngo email to which it belongs to 
+	bEmail: branch email
+}
+Responses and their meanings:{
+	406: empty fields
+	200: Authorized
+	500: internal server error
 }
