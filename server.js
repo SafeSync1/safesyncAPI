@@ -15,8 +15,7 @@ const PORT = process.env.PORT || 5000;
 
 App.use(Express.static(Path.join())); 
 
-App.use(require("./router/registerRoute.js"))
-App.use(require("./router/loginRoute.js"))
+App.use(require("./router/Routes.js"));
 
 const DB = process.env.DATABASE;
 
