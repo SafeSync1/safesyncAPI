@@ -26,7 +26,7 @@ Router.put("/UpdateBranch", async(req,res) => {
       }
 })
 
-Router.get("/GetNgoList", async(req, res) => {
+Router.post("/GetNgoList", async(req, res) => {
       try{
             return res.status(200).json({status: 200, data: await db.find({nOtp: 0, nAuthorized: true}, {nEmail:1, nName: 1})});
       }
