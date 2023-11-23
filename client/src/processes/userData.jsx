@@ -1,4 +1,4 @@
-export let developement = true;
+export let developement = false;
 export var isLoggedIn = false;
 
 export const setIsLoggedIn = (TorF) => {
