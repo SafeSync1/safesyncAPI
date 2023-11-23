@@ -53,7 +53,7 @@ Responses:{
 
 
 --> Login Route for NGO: 
-https://safesync.onrender.com/ngoLogin	GET
+https://safesync.onrender.com/ngoLogin	POST
 Purpose: To login into the system after registering as NGO
 Fields to send in body: {
 	email: value
@@ -70,7 +70,7 @@ Responses and their meanings:{
 
 
 --> Login Route for BRANCH: 
-https://safesync.onrender.com/bLogin	GET
+https://safesync.onrender.com/bLogin	POST
 Purpose: To login into the system after registering as BRANCH
 Fields to send in body: {
 	nEmail: ngo email to which it belongs to 
@@ -88,7 +88,7 @@ Responses and their meanings:{
 
 
 --> AutoLogin route, same for both: 
-https://safesync.onrender.com/isLoggedIn		GET
+https://safesync.onrender.com/isLoggedIn		POST
 Purpose: if user has token in cookies send that token in this api and verify the token and auto login
 Fields to send in body: {
 	userType: ngo/branch
@@ -159,5 +159,15 @@ Fields to send in body:{
 }
 Responses:{
 	200: updates successfully
+	500: Internal server error
+}
+
+-->Get a List of all Authorized NGOs
+https://safesync.onrender.com/GetNgoList		POST
+Fields to send {
+	nothing
+}
+Responses:{
+	200: List of authorized NGOs
 	500: Internal server error
 }

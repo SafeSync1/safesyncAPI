@@ -5,7 +5,7 @@ const db = require('../model/ngoSchema.js');
 const branch = require("../model/branchSchema")
 const Jwt = require("jsonwebtoken");
 
-Router.get("/ngoLogin", async (req, res) => {
+Router.post("/ngoLogin", async (req, res) => {
       try {
             const { email, password } = req.body;
 
@@ -52,7 +52,7 @@ Router.get("/ngoLogin", async (req, res) => {
       }
 })
 
-Router.get("/bLogin", async (req, res) => {
+Router.post("/bLogin", async (req, res) => {
       try {
             const { nEmail, bEmail, password } = req.body;
             if (!nEmail || !bEmail || !password) {
@@ -94,7 +94,7 @@ Router.get("/bLogin", async (req, res) => {
       }
 });
 
-Router.get("/isLoggedIn", async (req, res) => {
+Router.post("/isLoggedIn", async (req, res) => {
       try {
             const { userType, token } = req.body;
 

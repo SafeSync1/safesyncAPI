@@ -1,0 +1,223 @@
+.first {
+      width: 50%;
+      height: 95vh;
+      display: inline-block;
+      float: left;
+      border-radius: 20px 0px 0px 20px;
+      overflow: scroll;
+}
+
+.second {
+      width: 50%;
+      height: 95vh;
+      display: inline-block;
+      float: left;
+}
+
+.wb {
+      color: #193F73;
+      font-size: 33px;
+      font-weight: bolder;
+      /* text-shadow: 0px 0px, 0px 0px, 3px 3px; */
+      font-weight: 800;
+      letter-spacing: 2px;
+}
+
+.hello {
+      color: #005F92;
+      font-weight: 400;
+      font-size: 40px;
+}
+
+.ss {
+      border-radius: 0px 10px 10px 0px;
+}
+
+.sn {
+      margin-top: 30px;
+      margin-left: 30px;
+      margin-right: 10px;
+      /* transition: all 0.2s; */
+}
+
+.sn:hover {
+      border-radius: 5px;
+}
+
+.main {
+      /* border: 10px solid black; */
+      width: 100%;
+      height: 95vh;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.innerFirst {
+      padding-top: 40px;
+      width: 60%;
+      margin: auto;
+}
+
+.input-container {
+      position: relative;
+}
+
+.input-container input {
+      margin-bottom: 20px;
+      font-size: 20px;
+      padding: 12px;
+      width: 98%;
+      position: relative;
+      left: 0px;
+      border-radius: 0px;
+      border: 2px solid rgb(187, 183, 183);
+}
+
+.input-container label {
+      position: absolute;
+      top: 15px;
+      left: 10px;
+      font-size: 16px;
+      color: black;
+      pointer-event: none;
+      padding: 0px 5px;
+      transition: all 0.3s ease-in-out;
+      border-left: 2px solid white;
+      border-right: 2px solid white;
+}
+
+input:focus {
+      outline: none;
+}
+
+.input-container input:not(:placeholder-shown)~label,
+.input-container input:focus~label {
+      color: #005F92;
+      transform: translateX(4px) translateY(-22px);
+      background-color: white;
+      outline: none;
+      font-size: 14px;
+      border-left: 2px solid rgb(187, 183, 183);
+      border-right: 2px solid rgb(187, 183, 183);
+}
+
+
+/* .input-container  */
+
+.form {
+      margin: 25px 0px 25px 0px;
+}
+
+.FP {
+      float: right;
+      font-size: 13px;
+      text-decoration: underline;
+}
+
+.RM {
+      font-size: 14px;
+      margin-bottom: 2px;
+      float: left;
+}
+
+.Loginbtn {
+      background-color: #193F73;
+      text-decoration: none;
+      border: none;
+      outline: none;
+      color: white;
+      padding: 9px 45px;
+      font-weight: bold;
+      margin: 20px 15px 0px 0px;
+}
+
+.Signupbtn {
+      border: 4px solid #005F92;
+      color: #005F92;
+      padding: 5px 41px;
+      font-weight: bold;
+      outline: none;
+      margin: 20px 15px 0px 0px;
+}
+
+@media only screen and (max-width: 1100px) {
+      body {
+            /* background-color: rgb(236, 168, 168); */
+            padding: 10px;
+      }
+
+      .ss {
+            margin: 10px;
+      }
+
+      .sn {
+            margin: 10px
+      }
+
+      .second {
+            display: none;
+      }
+
+      .first {
+            width: 95%;
+            float: none;
+            margin: auto;
+            display: block;
+      }
+
+      .innerFirst {
+            width: 85%;
+      }
+}
+
+.DD {
+      border: none;
+      outline: none;
+      padding: 12px;
+      margin-bottom: 20px;
+      font-size: 20px;
+      padding: 12px;
+      width: 98%;
+      border: 2px solid rgb(187, 183, 183);
+      border-radius: 10px;
+      transition: all 0.3s;
+}
+
+.DD:hover {
+      border: 2px solid black
+}
+
+.selector {
+      position: relative;
+}
+
+*::-webkit-scrollbar {
+      display: none;
+}
+
+.dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      height: 200px;
+      width: 100%;
+      overflow: scroll;
+}
+
+.dropdown-content div {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+}
+
+.dropdown-content div:hover {
+      background-color: #f1f1f1
+}
+
+.selected{
+      background-color: rgb(153, 221, 153);
+}
