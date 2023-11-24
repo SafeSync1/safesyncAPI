@@ -1,84 +1,75 @@
 import React, { useState, useEffect } from 'react'
-import { developement, setIsLoggedIn } from '../processes/userData.jsx'
-import Cookies from 'universal-cookie'
+import { developement, setOtp } from '../processes/userData'
 import {useNavigate} from 'react-router-dom'
 
-import '../Styles/Login.css'
-import SS from '../images/SAFE SYNC.jpg'
+import '../Styles/Register.css'
+import OP from '../images/otp pic.jpg'
+import LOGO from '../images/SAFE SYNC big.png'
 import SN from '../images/SAFE SYNC NGO.png'
 import SB from '../images/SAFE SYNC BRANCH.png'
 
-function Login() {
-      const history = useNavigate();
-      const cookie = new Cookies();
+function Register() {
       const [NorB, setnorb] = useState(0);
       const [ngo, setngo] = useState("");
       const [ngos, setngos] = useState([]);
       const [inputValues, setInputValues] = useState({
-            email: "", password: ""
+            name: "", email: "", password: ""
       });
+      const history = useNavigate();
       useEffect(() => {
-
             fetchData()
             document.getElementById(`${NorB}`).style.opacity = 1;
             document.getElementById(`${NorB === 0 ? 1 : 0}`).style.opacity = 0.5
       }, [NorB, ngo])
-      const Handle = (event) => {
-            const { name, value } = event.target;
-            setInputValues({ ...inputValues, [name]: value });
-      }
-      const Login = async () => {
+      let form = new FormData();
+      const Register = async () => {
             try {
                   if (NorB === 0) {
-                        if (!inputValues.email || !inputValues.password) {
+                        if (!inputValues.name ||!inputValues.email || !inputValues.password) {
                               alert("fill the fields properly")
+                        }
+                        else if(!form.get("document")){
+                              alert("Please select file")
                         }
                         else if (!inputValues.email.includes('@')) {
                               alert("Insert a valid email")
                         }
                         else {
+                              
                               try {
-                                    const res = await fetch((developement ? 'http://localhost:5000/ngoLogin' : '/ngoLogin'), {
+                                    
+                                    form.append("name", inputValues.name)
+                                    form.append("email", inputValues.email)
+                                    form.append("password", inputValues.password)
+                                    const res = await fetch((developement ? 'http://localhost:5000/ngoRegister' : '/ngoRegister'), {
                                           method: "POST",
                                           headers: {
-                                                "Content-Type": "application/json",
-                                                Accept: "application/json",
+                                                // "Content-Type": "application/json",
+                                                // Accept: "application/json",
                                                 "Access-Control-Allow-Origin": "*",
                                           },
-                                          body: JSON.stringify({
-                                                email: inputValues.email, password: inputValues.password
-                                          })
+                                          body: form
                                     })
 
                                     const data = await res.json();
 
                                     if (data.status === 406) {
-                                          alert("Fill the fields properly")
+                                          alert("Fill the fields properly1")
                                     }
-                                    else if (data.status === 417) {
-                                          alert("Incorrect email or password")
-                                    }
-                                    else if (data.status === 401) {
-                                          alert("Your OTP verification is pending")
-                                    }
-                                    else if (data.status === 402) {
-                                          alert("Authorization by admin is pending")
+                                    else if (data.status === 422) {
+                                          alert("Email already Exist")
                                     }
                                     else if (data.status === 500) {
                                           alert("Internal server error")
                                     }
-                                    else if (data.status === 202) {
-                                          setIsLoggedIn(true);
-                                          history("/Home")
-                                          if (document.getElementById('remember').checked) {
-                                                cookie.set("Token", data.token, { maxAge: 3.154e+10 })
-                                                cookie.set("userType", "ngo", { maxAge: 3.154e+10 })
-                                          }
-                                          else {
-                                                cookie.set("Token", data.token)
-                                                cookie.set("userType", "ngo")
-                                          }
-                                          alert("Login Successful")
+                                    else if (data.status === 201) {
+                                          setOtp({
+                                                state:true,
+                                                userType: "ngo",
+                                                email: inputValues.email
+                                          })
+                                          alert("Registration Successful")
+                                          history("/Otp")
                                     }
                                     else {
                                           throw Error;
@@ -93,7 +84,10 @@ function Login() {
                         if (ngo === "") {
                               alert("Please Select a NGO")
                         }
-                        else if (!inputValues.email || !inputValues.password) {
+                        else if(!form.get("document")){
+                              alert("Please select file")
+                        }
+                        else if (!inputValues.name||!inputValues.email || !inputValues.password) {
                               alert("fill the fields properly")
                         }
                         else if (!inputValues.email.includes('@')) {
@@ -101,16 +95,18 @@ function Login() {
                         }
                         else {
                               try {
-                                    const res = await fetch((developement ? 'http://localhost:5000/bLogin' : '/bLogin'), {
+                                    form.append("name", inputValues.name)
+                                    form.append("bEmail", inputValues.email)
+                                    form.append("password", inputValues.password)
+                                    form.append("nEmail", ngo)
+                                    const res = await fetch((developement ? 'http://localhost:5000/bRegister' : '/bRegister'), {
                                           method: "POST",
                                           headers: {
-                                                "Content-Type": "application/json",
-                                                Accept: "application/json",
+                                                // "Content-Type": "application/json",
+                                                // Accept: "application/json",
                                                 "Access-Control-Allow-Origin": "*",
                                           },
-                                          body: JSON.stringify({
-                                                nEmail: ngo, bEmail: inputValues.email, password: inputValues.password
-                                          })
+                                          body: form
                                     })
 
                                     const data = await res.json();
@@ -118,31 +114,21 @@ function Login() {
                                     if (data.status === 406) {
                                           alert("Fill the fields properly")
                                     }
-                                    else if (data.status === 417) {
-                                          alert("Incorrect email or password")
-                                    }
-                                    else if (data.status === 401) {
-                                          alert("Your OTP verification is pending")
-                                    }
-                                    else if (data.status === 402) {
-                                          alert("Authorization by admin is pending")
+                                    else if (data.status === 422) {
+                                          alert("Branch with this email Already Exist")
                                     }
                                     else if (data.status === 500) {
                                           alert("Internal server error")
                                     }
-                                    else if (data.status === 202) {
-                                          setIsLoggedIn(true);
-                                          history('/Home')
-                                          if (document.getElementById('remember').checked) {
-                                                cookie.set("Token", data.token, { maxAge: 3.154e+10 })
-                                                cookie.set("userType", "branch", { maxAge: 3.154e+10 })
-                                          }
-                                          else {
-                                                cookie.set("Token", data.token)
-                                                cookie.set("userType", "branch")
-                                          }
-
-                                          alert("Login Successful")
+                                    else if (data.status === 201) {
+                                          setOtp({
+                                                state:true,
+                                                userType: "branch",
+                                                email: inputValues.email,
+                                                nEmail:ngo
+                                          })
+                                          alert("Registration Successful")
+                                          history("/Otp")
                                     }
                                     else {
                                           throw Error;
@@ -158,6 +144,10 @@ function Login() {
                   console.log(e)
                   alert("Unknown error")
             }
+      }
+      const Handle = (event) => {
+            const { name, value } = event.target;
+            setInputValues({ ...inputValues, [name]: value });
       }
       const change = (e) => {
             if (Number(e.target.id) === 0) {
@@ -236,39 +226,45 @@ function Login() {
 
       }
       return (
-            <div className='main'>
-                  <div className="first half">
-                        <div className='innerFirst'>
-                              <div className='hello'>Hello,</div>
-                              <div className='wb'> welcome back! </div>
-                              <img id="0" onClick={change} className='sn' src={SN} alt="sn" width="100px" height="100px" />
-                              <img id="1" onClick={change} src={SB} alt="SB" className="sn" width="100px" height="100px" />
+            <>
+                  <div className="main">
+                        <div className="first part1">
+                              <div className="innerpart">
+                                    <div className="starter">
+                                          <img src={LOGO} alt="logo" className="LOGO" />
+                                          <div className="title">Registration <br />form </div>
+                                    </div>
+                                    <img id="0" onClick={change} className='sn1' src={SN} alt="sn" width="100px" height="100px" />
+                                    <img id="1" onClick={change} src={SB} alt="SB" className="sn1" width="100px" height="100px" />
+                                    <div className="form">
+                                          <Decide />
+                                          <div className="input-container">
+                                                <input type="name" onChange={Handle} name="name" placeholder='' />
+                                                <label>{(NorB === 0) ? "NGO " : "Branch "} Name</label>
+                                          </div>
+                                          <div className="input-container">
+                                                <input type="email" name="email" onChange={Handle} placeholder='' />
+                                                <label>{(NorB === 0) ? "NGO " : "Branch "}  Email</label>
+                                          </div>
+                                          <div className="input-container">
+                                                <input type="password" name="password" onChange={Handle} placeholder='' />
+                                                <label>Password</label>
+                                          </div>
+                                          Document for verification purpose: <input type="file" onChange={(e)=>{form.append("document", e.target.files[0])}} accept='application/pdf' name="document" id="document" />
+                                          <br />
+                                          <input type="button" onClick={Register} value="Sign up" className="Loginbtn" />
+                                          <input type="button" onClick={()=>{history("/login")}} value="Login" className="Signupbtn" />
 
-                              <div className="form">
-                                    <Decide />
-                                    <div className="input-container">
-                                          <input type="email" name='email' onChange={Handle} placeholder='' />
-                                          <label>Email address</label>
                                     </div>
-                                    <div className="input-container">
-                                          <input type="password" name='password' onChange={Handle} placeholder='' />
-                                          <label>Password</label>
-                                    </div>
-                                    <input type="checkbox" id="remember" />
-                                    <span className="FP">Forgot Password ?</span>
-                                    <span className="RM">Remember Me</span>
-                                    <br />
-                                    <input onClick={Login} className='Loginbtn' type="button" value="Login" />
-                                    <input onClick={()=>{history('/Register')}} className='Signupbtn' type="button" value="Sign Up" />
+
                               </div>
                         </div>
-
+                        <div className="second part2">
+                              <img className='ss' src={OP} alt="ss" width="100%" height="90%" />
+                        </div>
                   </div>
-                  <div className="second half">
-                        <img className='ss' src={SS} alt="ss" width="100%" height="100%" />
-                  </div>
-            </div>
+            </>
       )
 }
 
-export default Login
+export default Register

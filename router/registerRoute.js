@@ -90,7 +90,7 @@ Router.post("/CheckCode", async (req, res) => {
                         return res.status(422).json({ status: 422 });    //already Authorized
                   }
                   else if (Number(Gotp.bOtp) !== Number(otp)) {
-                        return res.status(407).json({ status: 407 }); //	Not Acceptable
+                        return res.status(406).json({ status: 406 }); //	Not Acceptable
                   }
                   else {
                         await branch.findOneAndUpdate({ nEmail: nEmail, bEmail:bEmail }, { bOtp: 0 })

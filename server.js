@@ -14,14 +14,8 @@ App.use(Express.json())
 const PORT = process.env.PORT || 5000;
 
 App.use(Express.static(Path.join()));
-App.use(Express.static("client/build"));
 
 const path = require("path");
-
-App.get("*", (req, res) => {
-
-      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-})
 
 App.use(require("./router/Routes.js"));
 
@@ -33,6 +27,11 @@ mongoose.connect(DB, {
 }).then(() => {
       console.log("connection successfull");
       App.listen(PORT);
+      App.use(Express.static("client/build"));
+      App.get("*", (req, res) => {
+
+            res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+      })
 }).catch((err) => {
       console.log(err);
 })
