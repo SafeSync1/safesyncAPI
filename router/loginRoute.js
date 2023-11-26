@@ -94,40 +94,4 @@ Router.post("/bLogin", async (req, res) => {
       }
 });
 
-Router.post("/isLoggedIn", async (req, res) => {
-      try {
-            const { userType, token } = req.body;
-
-            if (!token) {
-                  return res.status(407).json({ status: 407 });  //Token not found
-            }
-            const verifyToken = Jwt.verify(token, process.env.SECRET_KEY);
-            if (userType == 'ngo') {
-                  const rootUser = await db.findOne({ _id: verifyToken._id, "nTokens.nToken": token });
-
-                  if (!rootUser) {
-                        return res.status(408).json({ status: 408 });     //User not found
-                  }
-                  return res.status(200).json({ status: 200 })      //Yes user is logged in
-            }
-            else if (userType == 'branch') {
-                  const rootUser = await branch.findOne({ _id: verifyToken._id, "bTokens.bToken": token });
-
-                  if (!rootUser) {
-                        return res.status(408).json({ status: 408 });     //User not found
-                  }
-                  return res.status(200).json({ status: 200 })      //Yes user is logged in
-            }
-            else {
-                  return res.status(407).json({ status: 407 })      //Fill the fields properly
-            }
-      }
-      catch (err) {
-            console.log(err)
-            res.status(500).json({ status: 500 })      //Internal server error
-      }
-})
-
-
-
 module.exports = Router;

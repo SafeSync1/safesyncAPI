@@ -199,3 +199,27 @@ Responses{
 	409: password is same as current password
 	500: Internal server error
 }
+
+-->Multitask API 
+https://safesync.onrender.com/isLoggedIn      POST
+
+Purpose of Need when{
+	1: returns list of authorized NGOs (nName, nEmail)
+	2: returns a perticular Ngo's all Authorized branches (bName, bCoordinates, bEmail)
+	3: returns User's all details
+	4: returns all the details of a perticular branch
+	5: returns all the details of a perticular ngo
+}
+fields to send{
+	need: 1/2/3/4/5  (enter any one number, each represents a task)
+	token : value(manatory)
+	userType : "ngo"/"branch"
+	(nEmail):  when Need is 2/4/5
+	(bEmail): when Need is 4
+}
+Responses:{
+	200: everything ok (Returns a "data" variable with required data)
+	406: Required fields not found
+	408: token expired or invalid
+	500: internal server error
+}
