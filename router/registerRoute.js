@@ -5,6 +5,7 @@ const Express = require("express");
 const Router = Express.Router();
 const fs = require('fs')
 const multer = require('multer');
+const Bcrypt = require('bcrypt')
 
 const upload = multer({ dest: process.env.Destination });
 
@@ -84,8 +85,8 @@ Router.post("/CheckCode", async (req, res) => {
                         return res.status(200).json({ status: 200 }); //	ok
                   }
             }
-            else if(userType === "branch") {
-                  const Gotp = await branch.findOne({ bEmail: bEmail, nEmail: nEmail }, {bOtp: 1})
+            else if (userType === "branch") {
+                  const Gotp = await branch.findOne({ bEmail: bEmail, nEmail: nEmail }, { bOtp: 1 })
                   if (Number(Gotp.bOtp) === 0) {
                         return res.status(422).json({ status: 422 });    //already Authorized
                   }
@@ -93,11 +94,11 @@ Router.post("/CheckCode", async (req, res) => {
                         return res.status(406).json({ status: 406 }); //	Not Acceptable
                   }
                   else {
-                        await branch.findOneAndUpdate({ nEmail: nEmail, bEmail:bEmail }, { bOtp: 0 })
+                        await branch.findOneAndUpdate({ nEmail: nEmail, bEmail: bEmail }, { bOtp: 0 })
                         return res.status(200).json({ status: 200 }); //	ok
                   }
             }
-            else{
+            else {
                   return res.status(406).json({ status: 406 });   //not acceptable
             }
 
@@ -185,5 +186,86 @@ Router.post("/bRegister", upload.single('document'), async (req, res) => {
             return res.status(500).json({ status: 500 })    //Internal server error
       }
 });
+
+Router.post("/SendOtp", async (req, res) => {
+      try {
+            const { userType, nEmail, bEmail } = req.body;
+            if (!userType) {
+                  return res.status(406).json({ status: 406 });//not acceptable
+            }
+            if (userType === "ngo") {
+                  if (!nEmail) {
+                        return res.status(406).json({ status: 406 });//not acceptable
+                  }
+                  const Exist = await db.findOne({ nEmail }, { _id: 1 })
+                  if (!Exist) {
+                        return res.status(407).json({ status: 407 });//Does not Exist
+                  }
+            }
+            else {
+                  if (!nEmail || !bEmail) {
+                        return res.status(406).json({ status: 406 });//not acceptable
+                  }
+                  const Exist = await branch.findOne({ nEmail, bEmail }, { _id: 1 })
+                  if (!Exist) {
+                        return res.status(407).json({ status: 407 });//Does not Exist
+                  }
+            }
+            const CODE = Math.floor(100000 + Math.random() * 900000)
+            const msg = {
+                  to: (userType === "ngo" ? nEmail : bEmail),
+                  from: 'neelchhatbar@gmail.com', // Use the email address or domain you verified above
+                  subject: 'Verification',
+                  text: 'OTP verification..',
+                  html: `Your SafeSync Forgot password CODE: <strong>${CODE}</strong>`,
+            };
+
+            await sgMail.send(msg);
+            if (userType === "ngo") {
+                  await db.findOneAndUpdate({ nEmail }, { nOtp: Number(CODE) }); //Bcrypt.hash(CODE,12)
+            }
+            else {
+                  await branch.findOneAndUpdate({ nEmail, bEmail }, { bOtp: Number(CODE) });
+            }
+            res.status(200).json({ status: 200 })
+      } catch (error) {
+            console.log(error)
+            return res.status(500).json({ status: 500 })
+      }
+})
+
+Router.post("/ChangePassword", async (req, res) => {
+      try {
+            const { userType, bEmail, nEmail, password } = req.body;
+            if (!password || !nEmail || !userType) {
+                  return res.status(406).json({ status: 406 })
+            }
+            if (userType === "ngo") {
+                  const data = await db.findOne({ nEmail }, { nPassword: 1 })
+                  const ismatch = await Bcrypt.compare(password, data.nPassword);
+                  if (ismatch) {
+                        return res.status(409).json({ status: 409 })
+                  }
+                  const pass = await Bcrypt.hash(password, 12);
+                  await db.findOneAndUpdate({ nEmail }, { nPassword: pass })
+            }
+            else {
+                  if (!bEmail) {
+                        return res.status(406).json({ status: 406 })
+                  }
+                  const data = await branch.findOne({ nEmail, bEmail }, { bPassword: 1 })
+                  const ismatch = await Bcrypt.compare(password, data.bPassword)
+                  if (ismatch) {
+                        return res.status(409).json({ status: 409 })
+                  }
+                  const pass = await Bcrypt.hash(password, 12)
+                  await branch.findOneAndUpdate({nEmail, bEmail},{bPassword: pass})
+            }
+            res.status(200).json({ status: 200 })
+      } catch (error) {
+            console.log(error)
+            res.status(500).json({ status: 500 })
+      }
+})
 
 module.exports = Router;

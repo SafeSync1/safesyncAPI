@@ -171,3 +171,31 @@ Responses:{
 	200: List of authorized NGOs
 	500: Internal server error
 }
+
+-->Get forgot Password otps on Email
+https://safesync.onrender.com/SendOtp		POST
+Fields to Send{
+	userType: "ngo"/"branch"
+	nEmail: ngo email
+	(bEmail):only when userType is Branch
+}
+Responses{
+	200: OTP sent Successfully
+	406: Fill the fields properly
+	407: Ngo/Branch does not exist
+}
+
+-->password reset 
+https://safesync.onrender.com/ChangePassword	POST
+Fields to send{
+	userType: "ngo"/"branch"
+	nEmail: ngo email
+	(bEmail):only when userType is Branch
+	password: password user wants to update
+}
+Responses{
+	200: Password changed Successfully
+	406: Fill the fields properly
+	409: password is same as current password
+	500: Internal server error
+}
