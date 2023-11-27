@@ -2,7 +2,7 @@ const Express = require("express");
 const Router = Express.Router();
 const db = require('../model/ngoSchema');
 const branch = require("../model/branchSchema")
-Router.put("/ngoApprove", async (req, res) => {
+Router.post("/ngoApprove", async (req, res) => {
       try {
             const { email, secretKey } = req.body;
             if (secretKey != process.env.SECRET_KEY) {
@@ -22,7 +22,7 @@ Router.put("/ngoApprove", async (req, res) => {
       }
 });
 
-Router.put("/branchApprove", async(req, res)=>{
+Router.post("/branchApprove", async(req, res)=>{
       try {
             const {nEmail, bEmail} = req.body;
             if(!nEmail || !bEmail){

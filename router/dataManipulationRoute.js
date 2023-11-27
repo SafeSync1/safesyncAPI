@@ -4,7 +4,7 @@ const db = require('../model/ngoSchema')
 const branch = require("../model/branchSchema")
 const Jwt = require("jsonwebtoken");
 
-Router.put("/UpdateNgo", async (req, res) => {
+Router.post("/UpdateNgo", async (req, res) => {
       try {
             const { email, name, contact, expertise } = req.body;
 
@@ -16,7 +16,7 @@ Router.put("/UpdateNgo", async (req, res) => {
       }
 })
 
-Router.put("/UpdateBranch", async (req, res) => {
+Router.post("/UpdateBranch", async (req, res) => {
       try {
             const { address, coordinates, name, bEmail, nEmail, contact, services, expertise, equipements } = req.body;
             await branch.findOneAndUpdate({ nEmail: nEmail, bEmail: bEmail }, { bAddress: address, bCoordinates: coordinates, bName: name, bContact: contact, bServices: services, bExpertise: expertise, bEquipements: equipements })
