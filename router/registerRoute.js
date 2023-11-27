@@ -130,7 +130,7 @@ Router.post("/ngoRegister", upload.single('document'), async (req, res) => {
                   contentType: 'application/pdf'
             };
 
-            const user = new db({ nEmail: email, nPassword: password, nName: name, nContact: (req.body.contact ? req.body.contact : null), nDocument: final_doc });
+            const user = new db({ nEmail: email, nPassword: password, nName: name, nContact: (req.body.contact ? req.body.contact : ""), nDocument: final_doc });
 
             await user.save();
 
@@ -168,7 +168,7 @@ Router.post("/bRegister", upload.single('document'), async (req, res) => {
                   contentType: 'application/pdf'
             };
 
-            const user = new branch({ nEmail: nEmail, bEmail: bEmail, bPassword: password, bName: name, bDocument: final_doc, bContact: null });
+            const user = new branch({ nEmail: nEmail, bEmail: bEmail, bPassword: password, bName: name, bDocument: final_doc, bContact: "" });
             await user.save();
 
             res.status(201).send({ status: 201 }); //user created
@@ -190,6 +190,27 @@ Router.post("/bRegister", upload.single('document'), async (req, res) => {
 Router.post("/SendOtp", async (req, res) => {
       try {
             const { userType, nEmail, bEmail } = req.body;
+            const deleteIt = async () => {
+                  if (userType === "ngo") {
+                        console.log("Checking for ngo authorization.. " + (nEmail))
+                        const res = await db.findOne({ nEmail: nEmail }, { nOtp: 1 })
+                        if (res.nOtp !== 0) {
+                              console.log("Resetting it..")
+
+                              await db.findOneAndUpdate({nEmail: nEmail}, {nOtp: 0})
+                        }
+                  }
+                  else {
+                        console.log("Checking for branch authorization..." + (bEmail))
+                        const res = await branch.findOne({ nEmail: nEmail, bEmail: bEmail });
+                        if (res.bOtp !== 0) {
+                              console.log("Resetting it..")
+
+                              await branch.findOneAndUpdate({ nEmail: nEmail, bEmail: bEmail }, {bOtp: 0})
+                        }
+                  }
+            }
+            setTimeout(deleteIt, 60000);
             if (!userType) {
                   return res.status(406).json({ status: 406 });//not acceptable
             }
@@ -237,6 +258,7 @@ Router.post("/SendOtp", async (req, res) => {
 Router.post("/ChangePassword", async (req, res) => {
       try {
             const { userType, bEmail, nEmail, password } = req.body;
+            
             if (!password || !nEmail || !userType) {
                   return res.status(406).json({ status: 406 })
             }
@@ -259,7 +281,7 @@ Router.post("/ChangePassword", async (req, res) => {
                         return res.status(409).json({ status: 409 })
                   }
                   const pass = await Bcrypt.hash(password, 12)
-                  await branch.findOneAndUpdate({nEmail, bEmail},{bPassword: pass})
+                  await branch.findOneAndUpdate({ nEmail, bEmail }, { bPassword: pass })
             }
             res.status(200).json({ status: 200 })
       } catch (error) {

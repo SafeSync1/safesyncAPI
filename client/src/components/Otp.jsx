@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { otp, setOtp, developement } from "../processes/userData"
 import { useNavigate } from 'react-router-dom'
 
@@ -9,6 +9,11 @@ import LOCK from '../images/lock.png'
 
 function Otp() {
       const history = useNavigate();
+      useEffect(() => {
+            if (!otp.state) {
+                  history('/login')
+            }
+      }, [])
       if (otp.state) {
 
             setTimeout(() => {
@@ -37,7 +42,7 @@ function Otp() {
                                           },
                                           body: JSON.stringify({
                                                 otp: document.getElementsByName('otp')[0].value,
-                                                nEmail: otp.email,
+                                                nEmail: otp.nEmail,
                                                 userType: otp.userType
                                           })
                                     })
@@ -54,11 +59,17 @@ function Otp() {
                                           alert("Internal server error")
                                     }
                                     else if (data.status === 200) {
-                                          setOtp({
-                                                state: false
-                                          })
-                                          alert("Verified..!!")
-                                          history("/Home")
+                                          if (!otp.FP) {
+                                                setOtp({
+                                                      state: false
+                                                })
+                                                alert("Verified..!!")
+                                                history("/Home")
+                                          }
+                                          else {
+                                                alert("Verified..!!")
+                                                history("/RP");
+                                          }
                                     }
                                     else {
                                           throw Error;
@@ -81,7 +92,7 @@ function Otp() {
                                                 otp: document.getElementsByName('otp')[0].value,
                                                 nEmail: otp.nEmail,
                                                 userType: otp.userType,
-                                                bEmail: otp.email
+                                                bEmail: otp.bEmail
                                           })
                                     })
 
@@ -97,11 +108,17 @@ function Otp() {
                                           alert("Internal server error")
                                     }
                                     else if (data.status === 200) {
-                                          setOtp({
-                                                state: false
-                                          })
-                                          alert("Verified..!!")
-                                          history("/Home")
+                                          if (!otp.FP) {
+                                                setOtp({
+                                                      state: false
+                                                })
+                                                alert("Verified..!!")
+                                                history("/Home")
+                                          }
+                                          else {
+                                                alert("Verified..!!")
+                                                history("/RP");
+                                          }
                                     }
                                     else {
                                           throw Error;
@@ -147,6 +164,7 @@ function Otp() {
             )
       }
       else {
+
             return (
                   <>Error</>
             )

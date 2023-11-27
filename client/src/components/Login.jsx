@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { developement, setIsLoggedIn } from '../processes/userData.jsx'
 import Cookies from 'universal-cookie'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, NavLink} from 'react-router-dom'
 
 import '../Styles/Login.css'
 import SS from '../images/SAFE SYNC.jpg'
@@ -255,7 +255,7 @@ function Login() {
                                           <label>Password</label>
                                     </div>
                                     <input type="checkbox" id="remember" />
-                                    <span className="FP">Forgot Password ?</span>
+                                    <span className="FP"><NavLink to="/FP">Forgot Password ?</NavLink></span>
                                     <span className="RM">Remember Me</span>
                                     <br />
                                     <input onClick={Login} className='Loginbtn' type="button" value="Login" />

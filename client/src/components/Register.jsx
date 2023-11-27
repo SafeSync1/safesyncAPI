@@ -3,7 +3,7 @@ import { developement, setOtp } from '../processes/userData'
 import {useNavigate} from 'react-router-dom'
 
 import '../Styles/Register.css'
-import OP from '../images/otp pic.jpg'
+import OP from '../images/rocket.jpg'
 import LOGO from '../images/SAFE SYNC big.png'
 import SN from '../images/SAFE SYNC NGO.png'
 import SB from '../images/SAFE SYNC BRANCH.png'
@@ -66,7 +66,7 @@ function Register() {
                                           setOtp({
                                                 state:true,
                                                 userType: "ngo",
-                                                email: inputValues.email
+                                                nEmail: inputValues.email
                                           })
                                           alert("Registration Successful")
                                           history("/Otp")
@@ -124,7 +124,7 @@ function Register() {
                                           setOtp({
                                                 state:true,
                                                 userType: "branch",
-                                                email: inputValues.email,
+                                                bEmail: inputValues.email,
                                                 nEmail:ngo
                                           })
                                           alert("Registration Successful")
@@ -260,7 +260,7 @@ function Register() {
                               </div>
                         </div>
                         <div className="second part2">
-                              <img className='ss' src={OP} alt="ss" width="100%" height="90%" />
+                              <img className='ss' src={OP} alt="ss" width="100%" height="100%" />
                         </div>
                   </div>
             </>

@@ -22,7 +22,7 @@ const branchSchema = new Mongoose.Schema({
       },
       bCoordinates: {
             type: String,
-            default: "0"
+            default: "0, 0"
       },
       bAddress: {
             type: String,
@@ -41,7 +41,7 @@ const branchSchema = new Mongoose.Schema({
             required: true
       },
       bContact: {
-            type: Number
+            type: String
       },
       bServices: {
             // sName: {
@@ -50,11 +50,12 @@ const branchSchema = new Mongoose.Schema({
             // sDescription: {
             //       type: String
             // }
-            type: String
+            type: String,
+            default: ""
       },
       bLastInteraction: {
             type: Date,      //This will include date and time both
-            default: null
+            default: "0"
       },
       bExpertise: {
             // eName: {

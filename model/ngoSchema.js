@@ -26,7 +26,7 @@ const ngoSchema = new Mongoose.Schema({
       },
 
       nContact: {
-            type: Number
+            type: String
       },
 
       nPassword: {
