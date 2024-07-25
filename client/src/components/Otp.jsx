@@ -135,7 +135,7 @@ function Otp() {
 
             }
             return (
-                  <>
+                  <div className='parent'>
                         <div className="main">
                               <div className="first part1">
                                     <div className="innerpart">
@@ -160,7 +160,7 @@ function Otp() {
                               </div>
                         </div>
 
-                  </>
+                  </div>
             )
       }
       else {

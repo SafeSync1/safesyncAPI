@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { developement, setIsLoggedIn } from '../processes/userData.jsx'
 import Cookies from 'universal-cookie'
-import {useNavigate, NavLink} from 'react-router-dom'
+import { useNavigate, NavLink } from 'react-router-dom'
 
 import '../Styles/Login.css'
 import SS from '../images/SAFE SYNC.jpg'
@@ -236,38 +236,41 @@ function Login() {
 
       }
       return (
-            <div className='main'>
-                  <div className="first half">
-                        <div className='innerFirst'>
-                              <div className='hello'>Hello,</div>
-                              <div className='wb'> welcome back! </div>
-                              <img id="0" onClick={change} className='sn' src={SN} alt="sn" width="100px" height="100px" />
-                              <img id="1" onClick={change} src={SB} alt="SB" className="sn" width="100px" height="100px" />
+            <div className="parent">
+                  <div className='main'>
+                        <div className="first half">
+                              <div className='innerFirst'>
+                                    <div className='hello'>Hello,</div>
+                                    <div className='wb'> welcome back! </div>
+                                    <img id="0" onClick={change} className='sn' src={SN} alt="sn" width="100px" height="100px" />
+                                    <img id="1" onClick={change} src={SB} alt="SB" className="sn" width="100px" height="100px" />
 
-                              <div className="form">
-                                    <Decide />
-                                    <div className="input-container">
-                                          <input type="email" name='email' onChange={Handle} placeholder='' />
-                                          <label>Email address</label>
+                                    <div className="form">
+                                          <Decide />
+                                          <div className="input-container">
+                                                <input type="email" name='email' onChange={Handle} placeholder='' />
+                                                <label>Email address</label>
+                                          </div>
+                                          <div className="input-container">
+                                                <input type="password" name='password' onChange={Handle} placeholder='' />
+                                                <label>Password</label>
+                                          </div>
+                                          <input type="checkbox" id="remember" />
+                                          <span className="FP"><NavLink to="/FP">Forgot Password ?</NavLink></span>
+                                          <span className="RM">Remember Me</span>
+                                          <br />
+                                          <input onClick={Login} className='Loginbtn' type="button" value="Login" />
+                                          <input onClick={() => { history('/Register') }} className='Signupbtn' type="button" value="Sign Up" />
                                     </div>
-                                    <div className="input-container">
-                                          <input type="password" name='password' onChange={Handle} placeholder='' />
-                                          <label>Password</label>
-                                    </div>
-                                    <input type="checkbox" id="remember" />
-                                    <span className="FP"><NavLink to="/FP">Forgot Password ?</NavLink></span>
-                                    <span className="RM">Remember Me</span>
-                                    <br />
-                                    <input onClick={Login} className='Loginbtn' type="button" value="Login" />
-                                    <input onClick={()=>{history('/Register')}} className='Signupbtn' type="button" value="Sign Up" />
                               </div>
-                        </div>
 
-                  </div>
-                  <div className="second half">
-                        <img className='ss' src={SS} alt="ss" width="100%" height="100%" />
+                        </div>
+                        <div className="second half">
+                              <img className='ss' src={SS} alt="ss" width="100%" height="100%" />
+                        </div>
                   </div>
             </div>
+
       )
 }
 

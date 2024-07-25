@@ -8,7 +8,7 @@ import {LoginOrNot} from './processes/userData'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 LoginOrNot().then((result) => {
-	
+	console.log(result)
 	root.render(
 		<BrowserRouter>
 			<App />

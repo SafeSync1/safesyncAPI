@@ -1,0 +1,70 @@
+.PP{
+      margin: auto;
+      display: block;
+}
+
+.input-container1 {
+      position: relative;
+      display: inline-block;
+      width: 47%;
+      margin-right: 15px;
+}
+
+.input-container1 input {
+      margin-bottom: 20px;
+      font-size: 20px;
+      padding: 12px;
+      width: 90%;
+      position: relative;
+      left: 0px;
+      border-radius: 0px;
+      border: 2px solid rgb(187, 183, 183);
+}
+
+.input-container1 label {
+      position: absolute;
+      top: 15px;
+      left: 10px;
+      font-size: 16px;
+      color: black;
+      pointer-event: none;
+      padding: 0px 5px;
+      transition: all 0.3s ease-in-out;
+      border-left: 2px solid white;
+      border-right: 2px solid white;
+}
+
+input:focus {
+      outline: none;
+}
+
+.input-container1 input:not(:placeholder-shown)~label,
+.input-container1 input:focus~label {
+      color: #005F92;
+      transform: translateX(4px) translateY(-22px);
+      background-color: white;
+      outline: none;
+      font-size: 14px;
+      border-left: 2px solid rgb(187, 183, 183);
+      border-right: 2px solid rgb(187, 183, 183);
+}
+
+.form1 {
+      margin: 25px 0px 25px 0px;
+      align-items: center;
+}
+
+.map{
+      width: 400px;
+      max-width: 100%;
+      height: 200px;
+      position: relative;
+      display: block;
+      margin: auto;
+}
+
+@media only screen and (max-width: 600px) {
+      .input-container1{
+            width: 100%;
+      }
+}

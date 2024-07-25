@@ -44,6 +44,10 @@
       border-radius: 5px;
 }
 
+.parent{
+      padding: 40px 80px;
+}
+
 .main {
       /* border: 10px solid black; */
       width: 100%;

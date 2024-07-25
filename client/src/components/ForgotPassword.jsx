@@ -138,7 +138,7 @@ function ForgotPassword() {
 
       }
       return (
-            <>
+            <div className='parent'>
                   <div className="main">
                         <div className="first part1">
                               <div className="innerpart">
@@ -164,7 +164,7 @@ function ForgotPassword() {
                               <img className='ss' src={FP} alt="ss" width="100%" height="100%" />
                         </div>
                   </div>
-            </>
+            </div>
       )
 
 }

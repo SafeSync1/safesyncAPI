@@ -1,0 +1,131 @@
+.box {
+      width: 100%;
+      height: 100px;
+}
+
+.NavLogo {
+      width: 40%;
+      height: 70px;
+      min-width: 220px;
+      float: left;
+      max-width: 250px;
+      margin-left: 30px;
+      margin-top: 3%;
+}
+
+.NavMenu {
+      width: 60px;
+      height: 60px;
+}
+
+.optionsCover {
+      font-weight: 500;
+      font-size: 18px;
+      float: right;
+      margin-right: 60px;
+      margin-top: 31px;
+      /* position: relative; */
+}
+
+.options {
+      display: inline-block;
+      margin-right: 60px;
+      text-decoration: none;
+}
+
+.options:hover {
+      text-decoration: underline;
+}
+
+.logout {
+      outline: none;
+      background-color: #193F73;
+      border-radius: 20px;
+      color: white;
+      width: 100px;
+      height: 40px;
+      font-size: 20px;
+      float: none;
+}
+
+.vr {
+      border-right: 2px solid black;
+      margin-right: 60px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+}
+
+.laptop {
+      display: block;
+}
+
+.mobile {
+      display: none;
+}
+
+@media only screen and (max-width: 900px) {
+      .laptop {
+            display: none;
+      }
+
+      .mobile {
+            display: block;
+      }
+
+      .optionsCover {
+            font-weight: 600;
+            margin-top: 17px;
+            text-align: center;
+            margin-right: 30px;
+      }
+
+      .options {
+            margin-right: 0px;
+            margin-top: 40px;
+            text-align: center;
+            color: black;
+            font-size: 25px;
+      }
+
+      .upper {
+            margin-top: 37%;
+      }
+      .logout{
+            margin-top: 20px;
+            height: 50px;
+            width: 130px;
+            font-size: 25px;
+      }
+
+      .partition {
+            position: absolute;
+            height: 100%;
+            width: 40%;
+            min-width: 300px;
+            top: 0;
+            right: 0px;
+            background-image: linear-gradient(to left, #193F73, white);
+            display: none;
+      }
+      .anim {
+            display: block;
+            animation: view 1s;
+      }
+      @keyframes view {
+            0%{
+                  opacity: 0;
+                  
+            }
+            100%{
+                  display: 1;
+            }
+      }
+      .close{
+            width: 50px;
+            height: 50px;
+            float: right;
+            position: absolute;
+            top: 30px;
+            left: 30px;
+      }
+}
