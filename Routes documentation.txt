@@ -5,7 +5,7 @@ IMPORTANT: (attribute) is optional attribute
 https://safesync.onrender.com/ngoRegister		POST
 Purpose: Registers ngos only and sends otp verification email to provided ngo email, 
 Registration will get automatically deleted in 60 seconds if otp verification is not done
-Fields to send in body: {
+Fields to send in body: { 
 	email:value
 	password:value
 	name: value
